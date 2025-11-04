@@ -1,0 +1,55 @@
+# Program to calculate Fibonacci numbers using
+# both Recursive and Non-Recursive (Iterative) methods
+
+# ----------------------------------------
+# Non-Recursive (Iterative) Approach
+# ----------------------------------------
+def fibonacci_iterative(n):
+    """
+    Calculates the nth Fibonacci number using iteration.
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+    """
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+
+    a, b = 0, 1
+    for i in range(2, n + 1):
+        c = a + b
+        a, b = b, c
+    return b
+
+
+# ----------------------------------------
+# Recursive Approach
+# ----------------------------------------
+def fibonacci_recursive(n):
+    """
+    Calculates the nth Fibonacci number using recursion.
+    Time Complexity: O(2^n)
+    Space Complexity: O(n)  (due to call stack)
+    """
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
+
+
+# ----------------------------------------
+# Main Program
+# ----------------------------------------
+if __name__ == "__main__":
+    n = int(input("Enter the term number (n): "))
+
+    print("\n--- Fibonacci Calculation ---")
+    print(f"Fibonacci({n}) using Iterative method = {fibonacci_iterative(n)}")
+    print(f"Fibonacci({n}) using Recursive method = {fibonacci_recursive(n)}")
+
+    # Display complexity summary
+    print("\n--- Time and Space Complexity Analysis ---")
+    print("Iterative Method  -> Time: O(n), Space: O(1)")
+    print("Recursive Method  -> Time: O(2^n), Space: O(n)")
