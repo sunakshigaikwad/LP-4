@@ -1,0 +1,78 @@
+import heapq
+
+# Node structure for Huffman Tree
+class Node:
+    def __init__(self, char, freq):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+    # define comparison for priority queue
+    def __lt__(self, other):
+        return self.freq < other.freq
+
+
+# Function to generate Huffman Codes
+def generate_codes(node, current_code, codes):
+    if node is None:
+        return
+
+    # Leaf node
+    if node.char is not None:
+        codes[node.char] = current_code
+        return
+
+    # Traverse left and right
+    generate_codes(node.left, current_code + "0", codes)
+    generate_codes(node.right, current_code + "1", codes)
+
+
+# Main Huffman Encoding function
+def huffman_encoding(text):
+    if not text:
+        return "", {}
+
+    # Step 1: Frequency of each character
+    freq = {}
+    for char in text:
+        freq[char] = freq.get(char, 0) + 1
+
+    # Step 2: Build priority queue (min-heap)
+    heap = []
+    for char, frequency in freq.items():
+        heapq.heappush(heap, Node(char, frequency))
+
+    # Step 3: Build Huffman Tree
+    while len(heap) > 1:
+        left = heapq.heappop(heap)
+        right = heapq.heappop(heap)
+
+        merged = Node(None, left.freq + right.freq)
+        merged.left = left
+        merged.right = right
+
+        heapq.heappush(heap, merged)
+
+    # Step 4: Generate Huffman Codes
+    root = heap[0]
+    codes = {}
+    generate_codes(root, "", codes)
+
+    # Step 5: Encode the text
+    encoded_text = "".join([codes[char] for char in text])
+
+    return encoded_text, codes
+
+
+# --------------------------------------------
+# Main Program
+# --------------------------------------------
+if __name__ == "__main__":
+    text = input("Enter the text to encode: ")
+
+    encoded_text, codes = huffman_encoding(text)
+
+    print("\n--- Huffman Encoding ---")
+    print("Character Codes:", codes)
+    print("Encoded Text:", encoded_text)
